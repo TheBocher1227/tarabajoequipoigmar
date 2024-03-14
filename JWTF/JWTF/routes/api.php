@@ -42,13 +42,13 @@ Route::group([
     Route::delete('delete/{id}',[UserController::class,'destroy'])->middleware('authrole')->where('id','[0-9]+');
     Route::put('put/{id}',[UserController::class,'update'])->middleware('authrole2')->where('id','[0-9]+');
 
-
+    Route::post('verificar', [AuthController::class,'verificarcodigo']);
+    Route::post('verify', [AuthController::class,'verify']);
 
     Route::post('storecategoria',[CategoriasController::class,'store']);
     Route::put('editarcategoria/{id}',[CategoriasController::class,'update'])->where('id','[0-9]+');
     Route::delete('eliminarcategoria/{id}',[CategoriasController::class,'delete'])->where('id','[0-9]+');
-    
-   
+
 });
 
 

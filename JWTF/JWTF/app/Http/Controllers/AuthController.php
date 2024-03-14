@@ -63,6 +63,8 @@ class AuthController extends Controller
     }
 
 
+    
+
 
     /**
      * Get the authenticated User.
@@ -153,4 +155,37 @@ class AuthController extends Controller
       
     }
 
+    public function verify(Request $request)
+    {
+        
+        try {
+            return response()->json([
+                "isActive" => true,
+                "tipo usuario" => auth()->user()->rol_id
+            ]);             
+        
+        } catch (\Exception $e) {
+            return response()->json(["isActive"=>false], 500);
+        }
+
+    }
+
+    public function verificarCodigo(Request $request)
+{
+    $request->validate([
+        'verificacion' => 'required|string|min:6|max:255',
+    ]);
+
+    $user = auth()->user();
+
+    if (!$user) {
+        return response()->json(['error' => 'Usuario no encontrado'], 404);
+    }
+
+    if (Hash::check($request->verificacion, $user->verificacion)) {
+        return response()->json(['message' => 'Token de verificación válido']);
+    } else {
+        return response()->json(['error' => 'Token de verificación inválido'], 401);
+    }
+}
 }
